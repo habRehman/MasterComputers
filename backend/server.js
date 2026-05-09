@@ -5,10 +5,10 @@
 
 require('dotenv').config()
 
-const express   = require('express')
-const cors      = require('cors')
-const helmet    = require('helmet')
-const morgan    = require('morgan')
+const express = require('express')
+const cors = require('cors')
+const helmet = require('helmet')
+const morgan = require('morgan')
 const rateLimit = require('express-rate-limit')
 
 const connectDB = require('./middleware/db')
@@ -18,20 +18,17 @@ connectDB()
 
 const app = express()
 
-// 🔥 IMPORTANT: Railway/Render proxy fix
+// Railway / Render proxy fix
 app.set('trust proxy', 1)
 
-// ── PORT (Railway provides this automatically)
-const PORT = process.env.PORT || 8080
-
-// ── Middleware
+// Middleware
 app.use(helmet())
 
 app.use(cors({
   origin: [
     'http://localhost:5173',
     'http://localhost:3000',
-    process.env.FRONTEND_URL // add this in Railway env later
+    process.env.FRONTEND_URL
   ].filter(Boolean),
   credentials: true
 }))
@@ -39,7 +36,7 @@ app.use(cors({
 app.use(express.json())
 app.use(morgan('dev'))
 
-// Rate limiter (safe for production behind proxy)
+// Rate limiter
 app.use('/api/', rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 300,
@@ -47,15 +44,15 @@ app.use('/api/', rateLimit({
   legacyHeaders: false,
 }))
 
-// ── Routes
+// Routes
 app.use('/api/products', require('./routes/products'))
-app.use('/api/orders',   require('./routes/orders'))
-app.use('/api/cart',     require('./routes/cart'))
-app.use('/api/auth',     require('./routes/auth'))
-app.use('/api/admin',    require('./routes/admin'))
-app.use('/api/ml',       require('./routes/ml'))
+app.use('/api/orders', require('./routes/orders'))
+app.use('/api/cart', require('./routes/cart'))
+app.use('/api/auth', require('./routes/auth'))
+app.use('/api/admin', require('./routes/admin'))
+app.use('/api/ml', require('./routes/ml'))
 
-// ── Health check (must work in production)
+// Health route
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'ok',
@@ -64,29 +61,31 @@ app.get('/api/health', (req, res) => {
   })
 })
 
-// ── Global error handler
+// Global error handler
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err.message)
+  console.error('❌ Error:', err)
+
   res.status(500).json({
     error: 'Internal server error',
     message: err.message
   })
 })
 
-// ── Start server (RAILWAY SAFE)
-// error handler here
+// IMPORTANT: only ONE PORT declaration
+const PORT = process.env.PORT || 8080
 
-const PORT = 8080
-
-app.listen(PORT, '0.0.0.0', () => {
+// IMPORTANT: save server instance
+const server = app.listen(PORT, '0.0.0.0', () => {
   console.log(`Server running on port ${PORT}`)
 })
 
-
-// ── Prevent silent crashes
+// Prevent silent crashes
 process.on('unhandledRejection', (err) => {
   console.error('Unhandled Rejection:', err)
-  server.close(() => process.exit(1))
+
+  server.close(() => {
+    process.exit(1)
+  })
 })
 
 process.on('uncaughtException', (err) => {
