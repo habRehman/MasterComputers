@@ -13,9 +13,6 @@ const rateLimit = require('express-rate-limit')
 
 const connectDB = require('./middleware/db')
 
-// Connect MongoDB
-connectDB()
-
 const app = express()
 
 // Railway / Render proxy fix
@@ -74,10 +71,20 @@ app.use((err, req, res, next) => {
 // IMPORTANT: only ONE PORT declaration
 const PORT = process.env.PORT || 8080
 
-// IMPORTANT: save server instance
-const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`Server running on port ${PORT}`)
-})
+// IMPORTANT: Start server after DB connection
+const startServer = async () => {
+  try {
+    await connectDB()
+    const server = app.listen(PORT, '0.0.0.0', () => {
+      console.log(`✅ Server running on port ${PORT}`)
+    })
+  } catch (err) {
+    console.error('❌ Failed to start server:', err.message)
+    process.exit(1)
+  }
+}
+
+startServer()
 
 // Prevent silent crashes
 process.on('unhandledRejection', (err) => {
