@@ -42,12 +42,19 @@ app.use('/api/', rateLimit({
 }))
 
 // Routes
-app.use('/api/products', require('./routes/products'))
-app.use('/api/orders', require('./routes/orders'))
-app.use('/api/cart', require('./routes/cart'))
-app.use('/api/auth', require('./routes/auth'))
-app.use('/api/admin', require('./routes/admin'))
-app.use('/api/ml', require('./routes/ml'))
+try {
+  app.use('/api/products', require('./routes/products'))
+  app.use('/api/orders', require('./routes/orders'))
+  app.use('/api/cart', require('./routes/cart'))
+  app.use('/api/auth', require('./routes/auth'))
+  app.use('/api/admin', require('./routes/admin'))
+  app.use('/api/ml', require('./routes/ml'))
+  console.log('[ROUTES] All routes loaded successfully')
+} catch (routeErr) {
+  console.error('[ROUTES] Failed to load routes:', routeErr.message)
+  console.error(routeErr.stack)
+  process.exit(1)
+}
 
 // Root route (for health checks)
 app.get('/', (req, res) => {
@@ -77,11 +84,14 @@ app.use((req, res) => {
 
 // Global error handler
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err)
+  console.error('❌ Error:', err.stack || err.message)
+  console.error('   Route:', req.method, req.path)
+  console.error('   URL:', req.originalUrl)
 
   res.status(500).json({
     error: 'Internal server error',
-    message: err.message
+    message: err.message,
+    path: req.path
   })
 })
 
@@ -93,12 +103,19 @@ let server
 
 const startServer = async () => {
   try {
+    console.log(`[SERVER] Environment: ${process.env.NODE_ENV || 'development'}`)
+    console.log(`[SERVER] PORT: ${PORT}`)
+    console.log(`[SERVER] FRONTEND_URL: ${process.env.FRONTEND_URL || 'not set'}`)
+    
     await connectDB()
+    
     server = app.listen(PORT, '0.0.0.0', () => {
-      console.log(`✅ Server running on port ${PORT}`)
+      console.log(`✅ Server running on http://0.0.0.0:${PORT}`)
+      console.log(`✅ Routes loaded: /api/products, /api/orders, /api/cart, /api/auth, /api/admin, /api/ml`)
     })
   } catch (err) {
     console.error('❌ Failed to start server:', err.message)
+    console.error(err.stack)
     process.exit(1)
   }
 }
