@@ -22,7 +22,7 @@ const app = express()
 app.set('trust proxy', 1)
 
 // ── PORT (Railway provides this automatically)
-const PORT = process.env.PORT || 5000
+const PORT = process.env.PORT || 8080
 
 // ── Middleware
 app.use(helmet())
@@ -74,9 +74,14 @@ app.use((err, req, res, next) => {
 })
 
 // ── Start server (RAILWAY SAFE)
-const server = app.listen(PORT, '0.0.0.0', () => {
-  console.log(`[Server] Running on port ${PORT}`)
+// error handler here
+
+const PORT = 8080
+
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on port ${PORT}`)
 })
+
 
 // ── Prevent silent crashes
 process.on('unhandledRejection', (err) => {
