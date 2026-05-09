@@ -31,19 +31,20 @@ Full-stack MERN e-commerce platform for the Pakistani market with AI/ML-powered 
 
 ## 📸 Screenshots
 
-![Home Page](image.png)
-![Categories](image-1.png)
-![Products](image-2.png)
-![Price Prediction](image-3.png)
-![Price Prediction](image-4.png)
-![Cart](image-5.png)
-![Checkout](image-6.png)
-![Admin Panel](image-7.png)
-![Analytics](image-8.png)
-![Analytics](image-9.png)
-![Add Product](image-10.png)
-![Order Managment](image-11.png)
-![ChatBot](image-12.png)
+![Home Page](assets/screenshots/image.png?v=1)
+![Categories](assets/screenshots/image-1.png)
+![Products](assets/screenshots/image-2.png)
+![Price Prediction](assets/screenshots/image-3.png)
+![Price Prediction](assets/screenshots/image-4.png)
+![Cart](assets/screenshots/image-5.png)
+![Checkout](assets/screenshots/image-6.png)
+![Admin Panel](assets/screenshots/image-7.png)
+![Analytics](assets/screenshots/image-8.png)
+![Analytics](assets/screenshots/image-9.png)
+![Add Product](assets/screenshots/image-10.png)
+![Order Management](assets/screenshots/image-11.png)
+![ChatBot](assets/screenshots/image-12.png)
+
 
 ## 🌐 Live Demo
 
