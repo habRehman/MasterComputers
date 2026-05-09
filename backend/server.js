@@ -49,12 +49,29 @@ app.use('/api/auth', require('./routes/auth'))
 app.use('/api/admin', require('./routes/admin'))
 app.use('/api/ml', require('./routes/ml'))
 
+// Root route (for health checks)
+app.get('/', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    service: 'Master Computers API',
+    db: 'MongoDB'
+  })
+})
+
 // Health route
 app.get('/api/health', (req, res) => {
   res.status(200).json({
     status: 'ok',
     db: 'MongoDB',
     service: 'Master Computers API'
+  })
+})
+
+// 404 handler
+app.use((req, res) => {
+  res.status(404).json({
+    error: 'Not Found',
+    path: req.path
   })
 })
 
