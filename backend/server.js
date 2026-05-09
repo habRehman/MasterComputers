@@ -1,43 +1,53 @@
 /**
  * Master Computers E-Commerce — Express.js Backend
- * MongoDB + JWT Edition · Pakistani Market
+ * Production-ready (Railway + Render compatible)
  */
+
 require('dotenv').config()
-const express    = require('express')
-const cors       = require('cors')
-const helmet     = require('helmet')
-const morgan     = require('morgan')
-const rateLimit  = require('express-rate-limit')
-const connectDB  = require('./middleware/db')
 
-// Connect to MongoDB
-const startServer = async () => {
-  await connectDB()
+const express   = require('express')
+const cors      = require('cors')
+const helmet    = require('helmet')
+const morgan    = require('morgan')
+const rateLimit = require('express-rate-limit')
 
-  app.listen(PORT, '0.0.0.0', () =>
-    console.log(`[Server] Running on port ${PORT}`)
-  )
-}
+const connectDB = require('./middleware/db')
 
-startServer()
-const app  = express()
+// Connect MongoDB
+connectDB()
+
+const app = express()
+
+// 🔥 IMPORTANT: Railway/Render proxy fix
+app.set('trust proxy', 1)
+
+// ── PORT (Railway provides this automatically)
 const PORT = process.env.PORT || 5000
 
-// ── Middleware ──────────────────────────────────────────────
-app.set('trust proxy', 1)
+// ── Middleware
 app.use(helmet())
-app.use(cors({ origin: ['http://localhost:5173', 'http://localhost:3000'] }))
+
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'http://localhost:3000',
+    process.env.FRONTEND_URL // add this in Railway env later
+  ].filter(Boolean),
+  credentials: true
+}))
+
 app.use(express.json())
 app.use(morgan('dev'))
-const limiter = rateLimit({
+
+// Rate limiter (safe for production behind proxy)
+app.use('/api/', rateLimit({
   windowMs: 15 * 60 * 1000,
   max: 300,
   standardHeaders: true,
   legacyHeaders: false,
-})
+}))
 
-app.use('/api/', limiter)
-// ── Routes ──────────────────────────────────────────────────
+// ── Routes
 app.use('/api/products', require('./routes/products'))
 app.use('/api/orders',   require('./routes/orders'))
 app.use('/api/cart',     require('./routes/cart'))
@@ -45,16 +55,36 @@ app.use('/api/auth',     require('./routes/auth'))
 app.use('/api/admin',    require('./routes/admin'))
 app.use('/api/ml',       require('./routes/ml'))
 
-app.get('/api/health', (_req, res) =>
-  res.json({ status: 'ok', db: 'MongoDB', service: 'Master Computers API' })
-)
-
-// ── Global error handler ───────────────────────────────────
-app.use((err, _req, res, _next) => {
-  console.error(err.stack)
-  res.status(500).json({ error: 'Internal server error', message: err.message })
+// ── Health check (must work in production)
+app.get('/api/health', (req, res) => {
+  res.status(200).json({
+    status: 'ok',
+    db: 'MongoDB',
+    service: 'Master Computers API'
+  })
 })
 
-app.listen(PORT, () =>
-  console.log(`[Server] Running on http://localhost:${PORT}`)
-)
+// ── Global error handler
+app.use((err, req, res, next) => {
+  console.error('❌ Error:', err.message)
+  res.status(500).json({
+    error: 'Internal server error',
+    message: err.message
+  })
+})
+
+// ── Start server (RAILWAY SAFE)
+const server = app.listen(PORT, '0.0.0.0', () => {
+  console.log(`[Server] Running on port ${PORT}`)
+})
+
+// ── Prevent silent crashes
+process.on('unhandledRejection', (err) => {
+  console.error('Unhandled Rejection:', err)
+  server.close(() => process.exit(1))
+})
+
+process.on('uncaughtException', (err) => {
+  console.error('Uncaught Exception:', err)
+  process.exit(1)
+})
