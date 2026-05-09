@@ -18,8 +18,11 @@ const app = express()
 // Railway / Render proxy fix
 app.set('trust proxy', 1)
 
+console.log('[APP] Express app created, setting up middleware...')
+
 // Middleware
 app.use(helmet())
+console.log('[MIDDLEWARE] helmet applied')
 
 app.use(cors({
   origin: [
@@ -29,9 +32,19 @@ app.use(cors({
   ].filter(Boolean),
   credentials: true
 }))
+console.log('[MIDDLEWARE] CORS applied')
 
 app.use(express.json())
+console.log('[MIDDLEWARE] express.json applied')
+
 app.use(morgan('dev'))
+console.log('[MIDDLEWARE] morgan applied')
+
+// Log all incoming requests
+app.use((req, res, next) => {
+  console.log(`[REQUEST] ${req.method} ${req.path} - IP: ${req.ip}`)
+  next()
+})
 
 // Rate limiter
 app.use('/api/', rateLimit({
@@ -58,11 +71,18 @@ try {
 
 // Root route (for health checks)
 app.get('/', (req, res) => {
-  res.status(200).json({
-    status: 'ok',
-    service: 'Master Computers API',
-    db: 'MongoDB'
-  })
+  console.log('[ROOT] Handling GET /')
+  try {
+    res.status(200).json({
+      status: 'ok',
+      service: 'Master Computers API',
+      db: 'MongoDB',
+      timestamp: new Date().toISOString()
+    })
+  } catch (err) {
+    console.error('[ROOT] Error:', err.message)
+    res.status(500).json({ error: 'Root route failed', message: err.message })
+  }
 })
 
 // Health route
@@ -96,22 +116,26 @@ app.use((err, req, res, next) => {
 })
 
 // IMPORTANT: only ONE PORT declaration
-const PORT = process.env.PORT || 8080
+const PORT = process.env.PORT || 5000
 
 // IMPORTANT: Start server after DB connection
 let server
 
 const startServer = async () => {
   try {
-    console.log(`[SERVER] Environment: ${process.env.NODE_ENV || 'development'}`)
-    console.log(`[SERVER] PORT: ${PORT}`)
+    console.log(`[SERVER] NODE_ENV: ${process.env.NODE_ENV || 'not set'}`)
+    console.log(`[SERVER] PORT from env: ${process.env.PORT || 'not set'}`)
+    console.log(`[SERVER] Using PORT: ${PORT}`)
     console.log(`[SERVER] FRONTEND_URL: ${process.env.FRONTEND_URL || 'not set'}`)
+    console.log(`[SERVER] MONGODB_URI starts with: mongodb${process.env.MONGODB_URI ? process.env.MONGODB_URI.substring(7, 40) : 'not set'}`)
     
     await connectDB()
     
     server = app.listen(PORT, '0.0.0.0', () => {
-      console.log(`✅ Server running on http://0.0.0.0:${PORT}`)
+      console.log(`✅ Server listening on PORT ${PORT}`)
       console.log(`✅ Routes loaded: /api/products, /api/orders, /api/cart, /api/auth, /api/admin, /api/ml`)
+      console.log(`✅ Health check at GET /api/health`)
+      console.log(`✅ Ready to accept requests`)
     })
   } catch (err) {
     console.error('❌ Failed to start server:', err.message)
