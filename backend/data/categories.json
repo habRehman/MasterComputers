@@ -1,0 +1,66 @@
+[
+  {
+    "_id": "8568f30f-8154-4961-82d6-5aff0db72111",
+    "name": "Laptops",
+    "slug": "laptops",
+    "icon": "💻",
+    "createdAt": "2026-05-09T07:12:11.366Z",
+    "updatedAt": "2026-05-09T07:12:11.366Z"
+  },
+  {
+    "_id": "b420db37-11cf-440c-96b4-6d5151026baf",
+    "name": "Desktops",
+    "slug": "desktops",
+    "icon": "🖥️",
+    "createdAt": "2026-05-09T07:12:11.368Z",
+    "updatedAt": "2026-05-09T07:12:11.368Z"
+  },
+  {
+    "_id": "312c2c84-d247-4039-b84d-703867399b98",
+    "name": "Mobile Phones",
+    "slug": "mobiles",
+    "icon": "📱",
+    "createdAt": "2026-05-09T07:12:11.369Z",
+    "updatedAt": "2026-05-09T07:12:11.369Z"
+  },
+  {
+    "_id": "4d5d104a-b13c-4d51-b273-e41dd1962d31",
+    "name": "Monitors",
+    "slug": "monitors",
+    "icon": "🖥",
+    "createdAt": "2026-05-09T07:12:11.369Z",
+    "updatedAt": "2026-05-09T07:12:11.369Z"
+  },
+  {
+    "_id": "71f872b3-e57a-45a1-8345-8996c782fbab",
+    "name": "Components",
+    "slug": "components",
+    "icon": "⚙️",
+    "createdAt": "2026-05-09T07:12:11.369Z",
+    "updatedAt": "2026-05-09T07:12:11.369Z"
+  },
+  {
+    "_id": "fe8cee50-a82b-45ac-abfb-9fe389810e15",
+    "name": "Accessories",
+    "slug": "accessories",
+    "icon": "🖱️",
+    "createdAt": "2026-05-09T07:12:11.370Z",
+    "updatedAt": "2026-05-09T07:12:11.370Z"
+  },
+  {
+    "_id": "24deda5c-0833-40a8-966c-379552e025ec",
+    "name": "Networking",
+    "slug": "networking",
+    "icon": "📡",
+    "createdAt": "2026-05-09T07:12:11.370Z",
+    "updatedAt": "2026-05-09T07:12:11.370Z"
+  },
+  {
+    "_id": "d783c966-93f9-4fff-b2cd-2038bf7e76db",
+    "name": "Storage",
+    "slug": "storage",
+    "icon": "💾",
+    "createdAt": "2026-05-09T07:12:11.371Z",
+    "updatedAt": "2026-05-09T07:12:11.371Z"
+  }
+]

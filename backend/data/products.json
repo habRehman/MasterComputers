@@ -1,0 +1,141 @@
+[
+  {
+    "_id": "8dcfe54e-de8f-4bb5-94a2-98fdeae2e511",
+    "name": "Dell Inspiron 15 3520",
+    "description": "Reliable everyday laptop ideal for students and office use.",
+    "price": 145000,
+    "original_price": 155000,
+    "category": "8568f30f-8154-4961-82d6-5aff0db72111",
+    "brand": "Dell",
+    "model": "Inspiron 3520",
+    "stock": 20,
+    "image_url": "https://www.qtechempire.com/wp-content/uploads/2024/05/dell-inspiron-15-3520-1585sg-512-w11-156-fhd-120hz-laptop-platinum-silver-i3-1215u-8gb-512gb-ssd-intel-w11-2.jpg",
+    "is_featured": true,
+    "is_active": true,
+    "specs": {
+      "Processor": "Intel Core i5-1235U",
+      "RAM": "8GB DDR4",
+      "Storage": "512GB SSD",
+      "Display": "15.6\" FHD",
+      "OS": "Windows 11"
+    },
+    "createdAt": "2026-05-09T07:12:11.371Z",
+    "updatedAt": "2026-05-09T07:12:11.371Z"
+  },
+  {
+    "_id": "5ed5974c-2a03-4c83-89ee-5b3afdb19342",
+    "name": "HP Pavilion 15-eg2000",
+    "description": "Powerful HP Pavilion laptop for students and professionals.",
+    "price": 168000,
+    "original_price": 180000,
+    "category": "8568f30f-8154-4961-82d6-5aff0db72111",
+    "brand": "HP",
+    "model": "Pavilion 15-eg2000",
+    "stock": 15,
+    "image_url": "https://ssl-product-images.www8-hp.com/digmedialib/prodimg/lowres/c08099876.png",
+    "is_featured": true,
+    "is_active": true,
+    "specs": {
+      "Processor": "Intel Core i5-1335U",
+      "RAM": "16GB DDR4",
+      "Storage": "512GB SSD",
+      "Display": "15.6\" FHD IPS"
+    },
+    "createdAt": "2026-05-09T07:12:11.372Z",
+    "updatedAt": "2026-05-09T07:12:11.372Z"
+  },
+  {
+    "_id": "45e973f3-9821-41e6-acf2-e655a57b4e1e",
+    "name": "Lenovo ThinkPad E14 Gen 5",
+    "description": "Business-class laptop with durable build and performance.",
+    "price": 210000,
+    "original_price": 225000,
+    "category": "8568f30f-8154-4961-82d6-5aff0db72111",
+    "brand": "Lenovo",
+    "model": "ThinkPad E14 Gen 5",
+    "stock": 10,
+    "image_url": "https://p4-ofp.static.pub/ShareResource/na/products/thinkpad/2023-e14-gen5/hero.png",
+    "is_featured": false,
+    "is_active": true,
+    "specs": {
+      "Processor": "Intel Core i7-1355U",
+      "RAM": "16GB DDR4",
+      "Storage": "512GB SSD"
+    },
+    "createdAt": "2026-05-09T07:12:11.372Z",
+    "updatedAt": "2026-05-09T07:12:11.372Z"
+  },
+  {
+    "_id": "208ff1e6-a157-4b08-9a79-5048960c00ca",
+    "name": "Samsung Galaxy A55 5G",
+    "description": "Most popular mid-range phone in Pakistan.",
+    "price": 89000,
+    "original_price": 95000,
+    "category": "312c2c84-d247-4039-b84d-703867399b98",
+    "brand": "Samsung",
+    "model": "Galaxy A55 5G",
+    "stock": 50,
+    "image_url": "https://d1iv6qgcmtzm6l.cloudfront.net/product_galleries/lg_PsnMQrBuP3Ah0LoaJIeAcXTCklnsokymDjKdesj4.jpg",
+    "is_featured": true,
+    "is_active": true,
+    "specs": {
+      "Processor": "Exynos 1480",
+      "RAM": "8GB",
+      "Storage": "256GB",
+      "Display": "6.6\" Super AMOLED 120Hz",
+      "Camera": "50MP+12MP+5MP",
+      "Battery": "5000mAh",
+      "OS": "Android 14"
+    },
+    "createdAt": "2026-05-09T07:12:11.372Z",
+    "updatedAt": "2026-05-09T07:12:11.372Z"
+  },
+  {
+    "_id": "10ba0de2-d87e-4521-884a-c35d8fcbdff5",
+    "name": "Xiaomi Redmi Note 13 Pro",
+    "description": "Budget king in Pakistan. Excellent camera at an affordable price.",
+    "price": 65000,
+    "original_price": 69000,
+    "category": "312c2c84-d247-4039-b84d-703867399b98",
+    "brand": "Xiaomi",
+    "model": "Redmi Note 13 Pro",
+    "stock": 60,
+    "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT9jgysqugzQpDQBifjKlZPfKsNaHaGjIxncQ&s",
+    "is_featured": true,
+    "is_active": true,
+    "specs": {
+      "Processor": "Helio G99 Ultra",
+      "RAM": "8GB",
+      "Storage": "256GB",
+      "Display": "6.67\" AMOLED 120Hz",
+      "Camera": "200MP",
+      "Battery": "5100mAh",
+      "OS": "Android 13"
+    },
+    "createdAt": "2026-05-09T07:12:11.373Z",
+    "updatedAt": "2026-05-09T07:12:11.373Z"
+  },
+  {
+    "_id": "b815196e-fa70-4b30-98bb-b2b8bf479455",
+    "name": "Acer Aspire 5",
+    "description": "Best value for money laptop in Pakistan.",
+    "price": 122000,
+    "original_price": 128000,
+    "category": "8568f30f-8154-4961-82d6-5aff0db72111",
+    "brand": "Acer",
+    "model": "Aspire 5 A515",
+    "stock": 35,
+    "image_url": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTMMa7Lkh65NyXAfWeu5DcnfEvYm1a-OqpYEg&s",
+    "is_featured": true,
+    "is_active": true,
+    "specs": {
+      "Processor": "AMD Ryzen 5 7530U",
+      "RAM": "8GB DDR4",
+      "Storage": "512GB SSD",
+      "Display": "15.6\" FHD IPS",
+      "OS": "Windows 11"
+    },
+    "createdAt": "2026-05-09T07:12:11.373Z",
+    "updatedAt": "2026-05-09T07:12:11.373Z"
+  }
+]
