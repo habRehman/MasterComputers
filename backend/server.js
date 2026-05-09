@@ -71,18 +71,19 @@ try {
 
 // Root route (for health checks)
 app.get('/', (req, res) => {
-  console.log('[ROOT] Handling GET /')
-  try {
-    res.status(200).json({
-      status: 'ok',
-      service: 'Master Computers API',
-      db: 'MongoDB',
-      timestamp: new Date().toISOString()
-    })
-  } catch (err) {
-    console.error('[ROOT] Error:', err.message)
-    res.status(500).json({ error: 'Root route failed', message: err.message })
-  }
+  console.log('[ROOT] GET / called')
+  res.status(200).json({
+    status: 'ok',
+    service: 'Master Computers API',
+    db: 'MongoDB',
+    timestamp: new Date().toISOString()
+  })
+})
+
+// Favicon route (prevent 404 errors)
+app.get('/favicon.ico', (req, res) => {
+  console.log('[FAVICON] GET /favicon.ico called')
+  res.status(204).end()
 })
 
 // Health route
@@ -147,15 +148,32 @@ const startServer = async () => {
 startServer()
 
 // Prevent silent crashes
-process.on('unhandledRejection', (err) => {
-  console.error('Unhandled Rejection:', err)
-
-  if (server) server.close(() => {
-    process.exit(1)
-  })
+process.on('unhandledRejection', (reason, promise) => {
+  console.error('[CRASH] Unhandled Rejection:', reason)
+  console.error('[CRASH] Promise:', promise)
 })
 
 process.on('uncaughtException', (err) => {
-  console.error('Uncaught Exception:', err)
+  console.error('[CRASH] Uncaught Exception:', err.message)
+  console.error(err.stack)
   process.exit(1)
 })
+
+process.on('SIGTERM', () => {
+  console.log('[SIGNAL] SIGTERM received, gracefully shutting down...')
+  if (server) {
+    server.close(() => {
+      console.log('[SIGNAL] Server closed')
+      process.exit(0)
+    })
+  } else {
+    process.exit(0)
+  }
+})
+
+// Flush console immediately in production
+if (process.env.NODE_ENV === 'production') {
+  setInterval(() => {
+    // Keep process alive
+  }, 30000)
+}
