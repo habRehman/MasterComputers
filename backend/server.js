@@ -89,10 +89,12 @@ app.use((err, req, res, next) => {
 const PORT = process.env.PORT || 8080
 
 // IMPORTANT: Start server after DB connection
+let server
+
 const startServer = async () => {
   try {
     await connectDB()
-    const server = app.listen(PORT, '0.0.0.0', () => {
+    server = app.listen(PORT, '0.0.0.0', () => {
       console.log(`✅ Server running on port ${PORT}`)
     })
   } catch (err) {
@@ -107,7 +109,7 @@ startServer()
 process.on('unhandledRejection', (err) => {
   console.error('Unhandled Rejection:', err)
 
-  server.close(() => {
+  if (server) server.close(() => {
     process.exit(1)
   })
 })
