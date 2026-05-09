@@ -49,7 +49,7 @@ Full-stack MERN e-commerce platform for the Pakistani market with AI/ML-powered 
 ## 🌐 Live Demo
 
 Frontend:
-https://your-vercel-link.vercel.app
+https://master-computers-dlmwawvom-habrehmans-projects.vercel.app
 
 Backend API:
 https://your-render-link.onrender.com
