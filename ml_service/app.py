@@ -1160,7 +1160,7 @@ print("="*60)
 rec_engine = RecommendationEngine()
 price_bot  = PricePredictionBot()
 print("="*60)
-print("  ✅  Ready on http://localhost:5001")
+print("  ✅  ML Service Ready")
 print("="*60 + "\n")
 
 
@@ -1377,10 +1377,6 @@ def chatbot():
     )})
 
 
-
-
-import os
-
-port = int(os.environ.get("PORT", 5001))
-
-app.run(host="0.0.0.0", port=port)
+if __name__ == '__main__':
+    port = int(os.environ.get('PORT', 5001))
+    app.run(host='0.0.0.0', port=port, debug=False)
