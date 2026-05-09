@@ -43,6 +43,14 @@ console.log('[MIDDLEWARE] morgan applied')
 // Log all incoming requests
 app.use((req, res, next) => {
   console.log(`[REQUEST] ${req.method} ${req.path} - IP: ${req.ip}`)
+  
+  // Log response
+  const originalSend = res.send
+  res.send = function(data) {
+    console.log(`[RESPONSE] ${req.method} ${req.path} - Status: ${res.statusCode}`)
+    return originalSend.call(this, data)
+  }
+  
   next()
 })
 
@@ -55,13 +63,20 @@ app.use('/api/', rateLimit({
 }))
 
 // Routes
+console.log('[ROUTES] Loading routes...')
 try {
   app.use('/api/products', require('./routes/products'))
+  console.log('[ROUTES] ✓ products')
   app.use('/api/orders', require('./routes/orders'))
+  console.log('[ROUTES] ✓ orders')
   app.use('/api/cart', require('./routes/cart'))
+  console.log('[ROUTES] ✓ cart')
   app.use('/api/auth', require('./routes/auth'))
+  console.log('[ROUTES] ✓ auth')
   app.use('/api/admin', require('./routes/admin'))
+  console.log('[ROUTES] ✓ admin')
   app.use('/api/ml', require('./routes/ml'))
+  console.log('[ROUTES] ✓ ml')
   console.log('[ROUTES] All routes loaded successfully')
 } catch (routeErr) {
   console.error('[ROUTES] Failed to load routes:', routeErr.message)
@@ -103,17 +118,20 @@ app.use((req, res) => {
   })
 })
 
-// Global error handler
+// Global error handler (must be last)
 app.use((err, req, res, next) => {
-  console.error('❌ Error:', err.stack || err.message)
-  console.error('   Route:', req.method, req.path)
-  console.error('   URL:', req.originalUrl)
-
-  res.status(500).json({
-    error: 'Internal server error',
-    message: err.message,
-    path: req.path
-  })
+  console.error('[ERROR] Caught error:', err.message)
+  console.error('[ERROR] Stack:', err.stack)
+  console.error('[ERROR] Route:', req.method, req.path)
+  
+  // Ensure response is sent
+  if (!res.headersSent) {
+    res.status(500).json({
+      error: 'Internal server error',
+      message: err.message,
+      path: req.path
+    })
+  }
 })
 
 // IMPORTANT: only ONE PORT declaration
@@ -138,6 +156,18 @@ const startServer = async () => {
       console.log(`✅ Health check at GET /api/health`)
       console.log(`✅ Ready to accept requests`)
     })
+    
+    // Set request timeout
+    server.requestTimeout = 30000
+    server.keepAliveTimeout = 29000
+    
+    server.on('clientError', (err, socket) => {
+      console.error('[SERVER] Client error:', err.message)
+      if (socket.writable) {
+        socket.end('HTTP/1.1 400 Bad Request\r\n\r\n')
+      }
+    })
+    
   } catch (err) {
     console.error('❌ Failed to start server:', err.message)
     console.error(err.stack)
