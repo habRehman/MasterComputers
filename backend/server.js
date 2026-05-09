@@ -11,18 +11,32 @@ const rateLimit  = require('express-rate-limit')
 const connectDB  = require('./middleware/db')
 
 // Connect to MongoDB
-connectDB()
+const startServer = async () => {
+  await connectDB()
 
+  app.listen(PORT, '0.0.0.0', () =>
+    console.log(`[Server] Running on port ${PORT}`)
+  )
+}
+
+startServer()
 const app  = express()
 const PORT = process.env.PORT || 5000
 
 // ── Middleware ──────────────────────────────────────────────
+app.set('trust proxy', 1)
 app.use(helmet())
 app.use(cors({ origin: ['http://localhost:5173', 'http://localhost:3000'] }))
 app.use(express.json())
 app.use(morgan('dev'))
-app.use('/api/', rateLimit({ windowMs: 15 * 60 * 1000, max: 300 }))
+const limiter = rateLimit({
+  windowMs: 15 * 60 * 1000,
+  max: 300,
+  standardHeaders: true,
+  legacyHeaders: false,
+})
 
+app.use('/api/', limiter)
 // ── Routes ──────────────────────────────────────────────────
 app.use('/api/products', require('./routes/products'))
 app.use('/api/orders',   require('./routes/orders'))
